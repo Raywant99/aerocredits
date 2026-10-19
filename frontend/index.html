@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroCredits | B2B Supply Chain Invoice Loan Engine</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Enterprise Header -->
+  <header class="top-header">
+    <div class="brand-wrapper">
+      <div class="brand-icon">✈️</div>
+      <div class="brand-info">
+        <h1>AeroCredits</h1>
+        <div class="brand-tagline">B2B Supply Chain Invoice Loan Engine &bull; Antigravity Multi-Agent Audit</div>
+      </div>
+    </div>
+
+    <div class="system-status-pills">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>Antigravity SDK: <strong>Autonomous Pipeline</strong></span>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>Google Cloud: <strong>gs://aerocredits-vault</strong></span>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot amber"></span>
+        <span>HITL Policy: <strong>&ge; $100k Review Gate</strong></span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-outline btn-sm" onclick="verifyAuditIntegrity()">
+        🛡️ Verify Ledger
+      </button>
+      <button class="btn btn-primary btn-sm" id="btn-open-ingest">
+        + Ingest New Invoice
+      </button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs (Stakeholder Perspectives & AI Room) -->
+  <nav class="nav-tabs-bar">
+    <div class="nav-tab active" data-target="supplier">
+      <span>🏢 Supplier Portal</span>
+      <span class="tab-badge">Discounting</span>
+    </div>
+    <div class="nav-tab" data-target="buyer">
+      <span>🏛️ Corporate Buyer Portal</span>
+      <span class="tab-badge">PO &amp; GRN</span>
+    </div>
+    <div class="nav-tab" data-target="lender">
+      <span>🏦 Financial Lender Portal</span>
+      <span class="tab-badge badge-amber" id="hitl-badge-count" style="display:none;">1</span>
+    </div>
+    <div class="nav-tab" data-target="agents">
+      <span>🤖 Autonomous AI Audit Room</span>
+      <span class="tab-badge" style="color:var(--accent-cyan);">Live Team</span>
+    </div>
+    <div class="nav-tab" data-target="audit">
+      <span>📜 Regulatory Audit Ledger</span>
+      <span class="tab-badge">SHA-256 Chained</span>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+
+    <!-- Top Key Metrics Banner -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>Total Invoiced Face Value</span>
+          <span>📄</span>
+        </div>
+        <div class="metric-value" id="metric-total-invoiced">$0.00</div>
+        <div class="metric-sub">Verified through Cloud Vault Storage</div>
+      </div>
+
+      <div class="metric-card green">
+        <div class="metric-label">
+          <span>Total Financed Liquidity</span>
+          <span>💰</span>
+        </div>
+        <div class="metric-value" id="metric-total-financed">$0.00</div>
+        <div class="metric-sub">Net disbursed working capital to suppliers</div>
+      </div>
+
+      <div class="metric-card purple">
+        <div class="metric-label">
+          <span>Auto-Approval Rate</span>
+          <span>⚡</span>
+        </div>
+        <div class="metric-value" id="metric-auto-rate">0%</div>
+        <div class="metric-sub">Zero-touch decisions &lt; $100k threshold</div>
+      </div>
+
+      <div class="metric-card amber">
+        <div class="metric-label">
+          <span>Institutional Liquidity Pool</span>
+          <span>🏦</span>
+        </div>
+        <div class="metric-value" id="metric-liquidity-pool">$0.00</div>
+        <div class="metric-sub">Available across Tier-1 lending partners</div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 1: SUPPLIER PORTAL                     -->
+    <!-- ========================================== -->
+    <div class="tab-panel active" id="panel-supplier">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Supplier Receivables &amp; Working Capital Acceleration</h2>
+          <p class="section-desc">Submit corporate invoices for instant automated discounting. Disbursed within 180 seconds upon 3-way logistics verification.</p>
+        </div>
+        <button class="btn btn-primary" onclick="document.getElementById('btn-open-ingest').click()">
+          + Ingest &amp; Discount Invoice
+        </button>
+      </div>
+
+      <div class="content-card">
+        <h3 style="font-size:1rem; font-weight:700; margin-bottom:1rem;">Active Supplier Invoices &amp; Loan Requests</h3>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Invoice #</th>
+                <th>Corporate Buyer</th>
+                <th>Face Value</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="supplier-invoices-tbody">
+              <!-- Populated dynamically via app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: CORPORATE BUYER PORTAL              -->
+    <!-- ========================================== -->
+    <div class="tab-panel" id="panel-buyer">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Corporate Buyer ERP &amp; Inbound Logistics Registry</h2>
+          <p class="section-desc">Anchor enterprise database containing approved Purchase Orders and carrier Goods Receipt Notes (GRN) for 3-way matching.</p>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <div class="content-card">
+          <h3 style="font-size:1rem; font-weight:700; margin-bottom:0.75rem;">Authorized ERP Purchase Orders</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>PO Number</th>
+                  <th>Anchor Buyer</th>
+                  <th>Authorized Value</th>
+                  <th>Date</th>
+                  <th>Items</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="buyer-pos-tbody">
+                <!-- Populated dynamically via app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h3 style="font-size:1rem; font-weight:700; margin-bottom:0.75rem;">Carrier Inbound Logistics &amp; GRN Proof</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Waybill #</th>
+                  <th>Carrier</th>
+                  <th>Destination Hub</th>
+                  <th>Delivery Date</th>
+                  <th>POD Proof Hash</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="buyer-waybills-tbody">
+                <!-- Populated dynamically via app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: FINANCIAL LENDER PORTAL             -->
+    <!-- ========================================== -->
+    <div class="tab-panel" id="panel-lender">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Financial Lender Operations &amp; Underwriting Desk</h2>
+          <p class="section-desc">Manage institutional liquidity deployment and execute Human-In-The-Loop approval gates on escalated high-value loans.</p>
+        </div>
+      </div>
+
+      <!-- Human-In-The-Loop High-Value Escalation Queue -->
+      <div class="section-header" style="margin-top:0.5rem; margin-bottom:0.75rem;">
+        <h3 style="font-size:1.05rem; font-weight:700; color:#fbbf24;">
+          🚨 Human-In-The-Loop (HITL) Review Queue (&ge; $100k or Variance Alerts)
+        </h3>
+      </div>
+      <div id="hitl-queue-container" style="margin-bottom:1.5rem;">
+        <!-- Populated dynamically via app.js -->
+      </div>
+
+      <!-- Institutional Liquidity Pools Grid -->
+      <div class="section-header" style="margin-top:1.5rem; margin-bottom:0.75rem;">
+        <h3 style="font-size:1.05rem; font-weight:700;">Participating Institutional Liquidity Pools</h3>
+      </div>
+      <div class="grid-2col" id="lender-pools-grid">
+        <!-- Populated dynamically via app.js -->
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: AUTONOMOUS AI AUDIT ROOM            -->
+    <!-- ========================================== -->
+    <div class="tab-panel" id="panel-agents">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Antigravity Autonomous Multi-Agent Financial Audit Team</h2>
+          <p class="section-desc">Real-time trace of autonomous agents collaborating across Ingestion, 3-Way Reconciliation, Compliance, Underwriting, and Governance.</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <select id="agent-invoice-select" class="form-control" style="width:auto;" onchange="selectInvoiceForVisualizer(this.value)">
+            <!-- Populated dynamically -->
+          </select>
+          <button class="btn btn-outline btn-sm" onclick="reRunActiveAudit()">
+            🔄 Re-Run Multi-Agent Audit Live
+          </button>
+        </div>
+      </div>
+
+      <!-- 5-Stage Agent Node Flow Graph -->
+      <div class="agent-flow-container">
+        <div class="agent-node active-stage">
+          <div class="agent-node-header">
+            <span class="agent-index">AGENT 01</span>
+            <span class="status-dot"></span>
+          </div>
+          <div class="agent-name">Ingestion Agent</div>
+          <div class="agent-role">Cloud Vault &amp; OCR Specialist</div>
+          <div class="agent-metrics-row">
+            <span>Latency: <strong class="stage-duration">184 ms</strong></span>
+            <span>Status: <strong class="stage-status" style="color:var(--accent-green);">VERIFIED</strong></span>
+          </div>
+        </div>
+
+        <div class="agent-node active-stage">
+          <div class="agent-node-header">
+            <span class="agent-index">AGENT 02</span>
+            <span class="status-dot"></span>
+          </div>
+          <div class="agent-name">Reconciliation Agent</div>
+          <div class="agent-role">3-Way Logistics Auditor</div>
+          <div class="agent-metrics-row">
+            <span>Latency: <strong class="stage-duration">295 ms</strong></span>
+            <span>Status: <strong class="stage-status" style="color:var(--accent-green);">VERIFIED</strong></span>
+          </div>
+        </div>
+
+        <div class="agent-node active-stage">
+          <div class="agent-node-header">
+            <span class="agent-index">AGENT 03</span>
+            <span class="status-dot"></span>
+          </div>
+          <div class="agent-name">Compliance Agent</div>
+          <div class="agent-role">Tax, Sanctions &amp; Anti-Fraud</div>
+          <div class="agent-metrics-row">
+            <span>Latency: <strong class="stage-duration">210 ms</strong></span>
+            <span>Status: <strong class="stage-status" style="color:var(--accent-green);">VERIFIED</strong></span>
+          </div>
+        </div>
+
+        <div class="agent-node active-stage">
+          <div class="agent-node-header">
+            <span class="agent-index">AGENT 04</span>
+            <span class="status-dot"></span>
+          </div>
+          <div class="agent-name">Underwriting Agent</div>
+          <div class="agent-role">Credit Sizing &amp; APR Pricing</div>
+          <div class="agent-metrics-row">
+            <span>Latency: <strong class="stage-duration">195 ms</strong></span>
+            <span>Status: <strong class="stage-status" style="color:var(--accent-green);">VERIFIED</strong></span>
+          </div>
+        </div>
+
+        <div class="agent-node active-stage">
+          <div class="agent-node-header">
+            <span class="agent-index">AGENT 05</span>
+            <span class="status-dot amber"></span>
+          </div>
+          <div class="agent-name">Gatekeeper Agent</div>
+          <div class="agent-role">Governance &amp; HITL Gatekeeper</div>
+          <div class="agent-metrics-row">
+            <span>Latency: <strong class="stage-duration">142 ms</strong></span>
+            <span>Status: <strong class="stage-status" style="color:var(--accent-amber);">DECIDED</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent Thoughts & Evidence Feed -->
+      <div class="grid-2col">
+        <div class="content-card" style="margin-bottom:0;">
+          <h3 style="font-size:0.95rem; font-weight:700; margin-bottom:0.75rem; display:flex; justify-content:space-between;">
+            <span>Live Multi-Agent Thoughts &amp; Reasoning Log</span>
+            <span style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-mono);">SDK Stream</span>
+          </h3>
+          <div class="thoughts-console" id="agent-thoughts-stream">
+            <!-- Populated dynamically via agent_visualizer.js -->
+          </div>
+        </div>
+
+        <div class="content-card" style="margin-bottom:0;">
+          <h3 style="font-size:0.95rem; font-weight:700; margin-bottom:0.75rem;">3-Way Line-Item Reconciliation Evidence</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Description</th>
+                  <th>PO Qty</th>
+                  <th>Billed</th>
+                  <th>Delivered</th>
+                  <th>Unit $</th>
+                  <th>Total $</th>
+                  <th>Parity</th>
+                </tr>
+              </thead>
+              <tbody id="line-items-audit-tbody">
+                <!-- Populated dynamically via agent_visualizer.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: REGULATORY AUDIT LEDGER             -->
+    <!-- ========================================== -->
+    <div class="tab-panel" id="panel-audit">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Immutable Regulatory Audit Ledger &amp; Cryptographic Trail</h2>
+          <p class="section-desc">Chained SHA-256 event blocks guaranteeing mathematical proof against retroactive record manipulation for Basel III and SOC2 compliance.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn btn-outline btn-sm" onclick="verifyAuditIntegrity()">
+            🛡️ Verify Ledger Cryptography
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="exportRegulatoryPackage()">
+            📥 Download Compliance Package (JSON)
+          </button>
+        </div>
+      </div>
+
+      <!-- Cryptographic Verification Banner -->
+      <div class="verification-banner" id="verification-status-banner">
+        <div class="verification-content">
+          <div class="verification-icon">🛡️</div>
+          <div>
+            <div style="font-weight:700; color:var(--accent-green); font-size:1.05rem;">
+              Cryptographic Integrity Verified: Zero Tampering Detected
+            </div>
+            <div style="font-size:0.78rem; color:var(--text-secondary);">
+              Every block from Genesis #0 to present is chained via SHA-256 with intact previous-hash pointers.
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="verifyAuditIntegrity()">
+          🔄 Re-Verify Ledger
+        </button>
+      </div>
+
+      <!-- Blockchain Blocks Table -->
+      <div class="content-card">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Height</th>
+                <th>Timestamp (UTC)</th>
+                <th>Actor Agent / Officer</th>
+                <th>Action Type</th>
+                <th>Entity ID</th>
+                <th>Prev Hash</th>
+                <th>Block Hash</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="audit-blocks-tbody">
+              <!-- Populated dynamically via audit_viewer.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL 1: INGEST & AUDIT INVOICE            -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="modal-ingest-invoice">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>🚀 Ingest Invoice to Antigravity Multi-Agent Audit</h3>
+        <button class="close-btn" id="close-ingest-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom:1rem;">
+          <span class="form-label">Fast Fill Enterprise Demonstration Scenarios:</span>
+          <div class="sample-pills">
+            <button class="sample-pill-btn" onclick="loadSample('aerospace')">
+              ✈️ Boeing Turbine Blades ($84.6k &bull; Auto-Approve)
+            </button>
+            <button class="sample-pill-btn" onclick="loadSample('semiconductor')">
+              💾 Nvidia Silicon Wafers ($49.8k &bull; Auto-Approve)
+            </button>
+            <button class="sample-pill-btn" onclick="loadSample('heavy_hitl')">
+              ⚠️ Boeing Titanium Casings ($264.6k &bull; HITL Gate &ge; $100k)
+            </button>
+            <button class="sample-pill-btn" onclick="loadSample('variance')">
+              🚨 Pfizer Cold-Chain ($66.9k &bull; Delivery Shortfall Variance)
+            </button>
+          </div>
+        </div>
+
+        <form id="invoice-ingestion-form">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label class="form-label">Invoice Number</label>
+              <input type="text" id="form-invoice-num" class="form-control" required value="INV-AERO-TURBINE-005">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Supplier Entity</label>
+              <select id="form-supplier-id" class="form-control">
+                <option value="supp_aerotech">AeroTech Precision Turbine Dynamics</option>
+                <option value="supp_nanosilicon">NanoSilicon High-Purity Substrates</option>
+                <option value="supp_biovax">BioVax Cold-Chain Packaging</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label class="form-label">Anchor Corporate Buyer</label>
+              <select id="form-buyer-id" class="form-control">
+                <option value="buy_boeing">Boeing Defense, Space &amp; Commercial</option>
+                <option value="buy_nvidia">Nvidia Semiconductor Systems Corp</option>
+                <option value="buy_pfizer">Pfizer Global Biopharma Supply</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Associated ERP Purchase Order</label>
+              <input type="text" id="form-po-num" class="form-control" required value="PO-BOEING-8821">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label class="form-label">Logistics Waybill / GRN #</label>
+              <input type="text" id="form-wb-num" class="form-control" required value="WB-FDX-77192">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cloud Storage Vault URI</label>
+              <input type="text" id="form-gcs-uri" class="form-control" value="gs://aerocredits-vault-inbound/INV-AERO-TURBINE-005.pdf">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Invoice Line Items JSON</label>
+            <textarea id="form-items-json" class="form-control" style="font-family:var(--font-mono); font-size:0.78rem; height:120px;">[
+  {
+    "sku": "AERO-TURB-BLD-01",
+    "description": "Single-Crystal Nickel Alloy Turbine Blades Stage 1",
+    "ordered_quantity": 40.0,
+    "billed_quantity": 40.0,
+    "unit_price": 1960.0
+  }
+]</textarea>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('modal-ingest-invoice').classList.remove('active')">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" id="btn-submit-audit">
+              🚀 Launch Antigravity Multi-Agent Audit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 2: HUMAN-IN-THE-LOOP DECISION        -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="modal-hitl-decision">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>👤 Credit Officer Authorization Gate (HITL)</h3>
+        <button class="close-btn" id="close-hitl-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="hitl-modal-loan-id">
+        <input type="hidden" id="hitl-modal-decision">
+
+        <div style="background:var(--bg-secondary); padding:1rem; border-radius:8px; margin-bottom:1.25rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+            <span style="color:var(--text-muted); font-size:0.8rem;">Loan Reference ID:</span>
+            <strong id="hitl-modal-loan-display" style="font-family:var(--font-mono); color:var(--accent-cyan);">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+            <span style="color:var(--text-muted); font-size:0.8rem;">Requested Face Value:</span>
+            <strong id="hitl-modal-amount-display" style="font-size:1.15rem; color:#fff;">-</strong>
+          </div>
+          <div style="border-top:1px solid var(--border-color); padding-top:0.5rem; font-size:0.82rem; color:var(--text-secondary);">
+            <strong>Escalation Policy Reason:</strong> <span id="hitl-modal-reason-display">-</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Authorized Credit Officer</label>
+          <input type="text" id="hitl-modal-officer" class="form-control" value="Sarah Jenkins, Chief Credit Officer (Apex Commercial Liquidity)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Credit Decision Rationale &amp; Audit Notes</label>
+          <textarea id="hitl-modal-notes" class="form-control" style="height:90px;">Reviewed counterparty relationship and verified physical logistics carrier delivery receipt. Risk mitigants verified; approving loan for liquidity pool deployment.</textarea>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('modal-hitl-decision').classList.remove('active')">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-success" onclick="submitHitlDecision()">
+            ✍️ Cryptographically Sign &amp; Authorize Disbursement
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 3: AUDIT BLOCK INSPECTOR             -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="modal-block-details">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>🔍 Cryptographic Audit Block Inspector</h3>
+        <button class="close-btn" onclick="closeBlockModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem; font-size:0.82rem;">
+          <div><span style="color:var(--text-muted);">Block Height:</span> <strong id="block-detail-height" style="color:var(--accent-cyan);">-</strong></div>
+          <div><span style="color:var(--text-muted);">Timestamp:</span> <span id="block-detail-timestamp">-</span></div>
+          <div><span style="color:var(--text-muted);">Actor Agent:</span> <strong id="block-detail-actor">-</strong></div>
+          <div><span style="color:var(--text-muted);">Action Type:</span> <span id="block-detail-action">-</span></div>
+          <div style="grid-column:1 / -1;"><span style="color:var(--text-muted);">Entity Reference:</span> <code id="block-detail-entity">-</code></div>
+          <div style="grid-column:1 / -1;"><span style="color:var(--text-muted);">Previous Hash:</span> <code class="hash-pill" id="block-detail-prevhash">-</code></div>
+          <div style="grid-column:1 / -1;"><span style="color:var(--text-muted);">Block SHA-256 Hash:</span> <code class="hash-pill" id="block-detail-currhash">-</code></div>
+        </div>
+
+        <div>
+          <span class="form-label">Tamper-Evident Payload JSON:</span>
+          <pre id="block-detail-payload" style="background:#080c14; padding:1rem; border-radius:8px; border:1px solid var(--border-color); font-family:var(--font-mono); font-size:0.75rem; color:#a7f3d0; max-height:220px; overflow-y:auto;"></pre>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; margin-top:1.25rem;">
+          <button type="button" class="btn btn-outline" onclick="closeBlockModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/app.js"></script>
+  <script src="/js/agent_visualizer.js"></script>
+  <script src="/js/audit_viewer.js"></script>
+</body>
+</html>

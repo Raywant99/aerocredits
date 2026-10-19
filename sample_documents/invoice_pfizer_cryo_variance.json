@@ -1,0 +1,22 @@
+{
+  "invoice_number": "INV-BIO-2026-04",
+  "supplier_id": "supp_biovax",
+  "buyer_id": "buy_pfizer",
+  "po_number": "PO-PFIZER-3310",
+  "waybill_number": "WB-BIO-3310-POD",
+  "issue_date": "2026-10-02",
+  "due_date": "2026-12-31",
+  "currency": "USD",
+  "tax_rate": 0.08,
+  "gcs_uri": "gs://aerocredits-vault-inbound/INV-BIO-2026-04.pdf",
+  "notes": "Testing line-item quantity variance (500 billed vs 450 delivered) triggering human review gate.",
+  "line_items": [
+    {
+      "sku": "BIO-CRYO-VIAL-500",
+      "description": "Ultra-Low Temp Nitrogen Cryo Storage Vials 2ml",
+      "ordered_quantity": 500.0,
+      "billed_quantity": 500.0,
+      "unit_price": 124.0
+    }
+  ]
+}
